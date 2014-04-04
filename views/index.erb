@@ -1,0 +1,28 @@
+<html>
+  <head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <p>
+      Well, hello there!
+    </p>
+    <p>
+      We're going to now talk to the GitHub API. Ready?
+      <a href="https://github.com/login/oauth/authorize?scope=user:email,admin:repo_hook,repo&client_id=<%= client_id %>">Click here</a> to begin!</a>
+
+      <input id="repoin"></input>
+      <button id="repob">Click me</button>
+    </p>
+    <script type="text/javascript">
+      $('#repob').click(function(){
+        $.ajax({
+          url: 'http://localhost:3000/webhooks/new?repo_target='+$('#repoin').val(),
+          type: 'POST'}
+          ).complete(function(j, status){
+            console.log(j);
+            console.log(status);
+          })
+      });
+    </script>
+  </body>
+</html>
