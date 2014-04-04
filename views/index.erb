@@ -1,28 +1,52 @@
 <html>
-  <head>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  </head>
-  <body>
-    <p>
-      Well, hello there!
-    </p>
-    <p>
-      We're going to now talk to the GitHub API. Ready?
-      <a href="https://github.com/login/oauth/authorize?scope=user:email,admin:repo_hook,repo&client_id=<%= client_id %>">Click here</a> to begin!</a>
+<head>
 
-      <input id="repoin"></input>
-      <button id="repob">Click me</button>
-    </p>
-    <script type="text/javascript">
-      $('#repob').click(function(){
-        $.ajax({
-          url: 'http://localhost:3000/webhooks/new?repo_target='+$('#repoin').val(),
-          type: 'POST'}
-          ).complete(function(j, status){
-            console.log(j);
-            console.log(status);
-          })
-      });
-    </script>
-  </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
+<style>
+body { 
+  background: url(assets/img/bg.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <div class="site-wrapper-inner">
+
+    <div class="cover-container">
+
+      <div class="masthead clearfix">
+        <div class="inner">
+          <h3 class="masthead-brand">Anam</h3>
+        </div>
+      </div>
+
+      <div class="inner cover">
+        <h1 class="cover-heading">Free unlimited GitHub backup.</h1>
+        <p class="lead">GitHub is the most important website for developers today. It allows instant collaboration from around the world. Most importantly, its barrier to entry is extremely low: <b>free</b>. We believe the same should be true about backing up your GitHub data. That's why we built Anam, <b>a free, unlimited backup tool for your GitHub repositories</b>. Never be frustrated again when GitHub is down and you need to clone your project: every time you push we'll back up your repository seamlessly.</p>
+        <p class="lead">
+        <a href="https://github.com/login/oauth/authorize?scope=user:email,admin:repo_hook,repo&client_id=<%= client_id %>" class="btn btn-lg btn-default">Sign-in With GitHub</a>
+        </p>
+      </div>
+
+      <div class="mastfoot">
+        <div class="inner">
+          <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</body>
 </html>
