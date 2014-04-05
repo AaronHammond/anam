@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
+<style>
+body {
+  background: url(assets/img/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <div class="site-wrapper-inner">
+
+    <div class="cover-container">
+
+      <div class="masthead clearfix">
+        <div class="inner">
+          <h3 class="masthead-brand">Anam</h3>
+        </div>
+      </div>
+
+      <div class="inner cover">
+        <p class="lead">
+        <input id="repoin"></input>
+        <button class="btn btn-primary" id="repob">Click me</button>
+        </p>
+        <script type="text/javascript">
+$('#repob').click(function(){
+    $.ajax({
+url: '/webhooks/new?repo_target='+$('#repoin').val(),
+type: 'POST'}
+).complete(function(j, status){
+  console.log(j);
+  console.log(status);
+  })
+    });
+        </script>
+        </p>
+      </div>
+
+      <div class="mastfoot">
+        <div class="inner">
+          <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

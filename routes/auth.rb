@@ -35,6 +35,7 @@ class MyApp < Sinatra::Application
 			owner.update(:access_token=>access_token)
 		end
 			
+                # TODO: don't redirect back to index, go to authed.erb. I'm writing this on a bus without internet so I can't look up the documentation :/
 		redirect back
 	end
 
