@@ -36,7 +36,7 @@ class MyApp < Sinatra::Application
 		end
 			
                 # TODO: don't redirect back to index, go to authed.erb. I'm writing this on a bus without internet so I can't look up the documentation :/
-		redirect back
+		redirect to('/authed')
 	end
 
 end
