@@ -13,8 +13,9 @@ body {
   -o-background-size: cover;
   background-size: cover;
 }
-input {
+select {
   color: #333;
+  overflow: scroll;
 }
 </style>
 </head>
@@ -34,15 +35,18 @@ input {
 
       <div class="inner cover">
         <p class="lead">
-        <select id="repoin">
+        <select multiple id="repoin" class="input-lg">
         <% for repo in repos do %>
           <option><%= repo.name %></option>
         <% end %>
         </select>
 
-        <button class="btn btn-primary" id="repob">Click me</button>
+        <br>
+        <br>
+        <button class="btn btn-primary" id="repob">Backup!</button>
         </p>
         <script type="text/javascript">
+// this is a multiple select now, so it needs to loop and call the api multiple times
 $('#repob').click(function(){
     $.ajax({
 url: '/webhooks/new?repo_target='+'<%=login%>'+'/'+$('#repoin').val(),
