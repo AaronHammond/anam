@@ -34,13 +34,18 @@ input {
 
       <div class="inner cover">
         <p class="lead">
-        <input id="repoin"></input>
+        <select id="repoin">
+        <% for repo in repos do %>
+          <option><%= repo.name %></option>
+        <% end %>
+        </select>
+
         <button class="btn btn-primary" id="repob">Click me</button>
         </p>
         <script type="text/javascript">
 $('#repob').click(function(){
     $.ajax({
-url: '/webhooks/new?repo_target='+$('#repoin').val(),
+url: '/webhooks/new?repo_target='+'<%=login%>'+'/'+$('#repoin').val(),
 type: 'POST'}
 ).complete(function(j, status){
   console.log(j);
