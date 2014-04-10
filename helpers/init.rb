@@ -7,3 +7,6 @@ MyApp.helpers NiceBytes
 
 require_relative 'backupservice'
 MyApp.helpers BackupService
+
+require_relative 'randomidgenerator'
+MyApp.helpers RandomIdGenerator

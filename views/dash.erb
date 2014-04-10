@@ -46,16 +46,28 @@ select {
         <button class="btn btn-primary" id="repob">Backup!</button>
         </p>
         <script type="text/javascript">
-// this is a multiple select now, so it needs to loop and call the api multiple times
-$('#repob').click(function(){
-    $.ajax({
-url: '/webhooks/new?repo_target='+'<%=login%>'+'/'+$('#repoin').val(),
-type: 'POST'}
-).complete(function(j, status){
-  console.log(j);
-  console.log(status);
-  })
-    });
+        // this is a multiple select now, so it needs to loop and call the api multiple times
+        $('#repob').click(function(){
+          $.ajax({
+            url: '/webhooks/new?repo_target='+'<%=login%>'+'/'+$('#repoin').val(),
+            type: 'POST'})
+          .complete(function(j, status){
+              // the webhook has been created
+              if(j.status == 201){
+                // now let's kick off a backup!
+                var backup = j.responseJSON;
+                $.ajax({
+                  url: '/webhooks/'+backup.external_id,
+                  type: 'POST'
+                })
+                .complete(function(k, status){
+                  if(k.status == 201){
+                    console.log(k.responseJSON);
+                  }
+                });
+              }
+          });
+        });
         </script>
         </p>
       </div>

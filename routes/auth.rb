@@ -34,7 +34,7 @@ class MyApp < Sinatra::Application
       owner.update(:access_token=>access_token)
     end
 
-    redirect to('/authed')
+    redirect to('/dash')
   end
 
 end

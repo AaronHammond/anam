@@ -19,6 +19,8 @@ DB.create_table :backups do
 	varchar :repo_target
 	varchar :s3_link
 	boolean :active, :default=>true
+	varchar :external_id, :index=>true
+	varchar :webhook_id
 	foreign_key :user_id, :users
 end
 
