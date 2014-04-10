@@ -14,17 +14,18 @@ class MyApp < Sinatra::Application
     repos = github_user.rels[:repos].get.data
     backups = []
     # only show repos that aren't already backed up.
-    repos.filter do |repo|
-    	extantBackup = Backup[:user_id=>me.id, :repo_target=>me.username + '/' + repo.name]
+
+    fresh_repos = []
+    repos.each do |repo|
+      extantBackup = Backup[:user_id=>me.id, :repo_target=>me.username + '/' + repo.name]
       if extantBackup then
         backups.push(extantBackup)
-        return false
+      else
+        fresh_repos.push(repo)
       end
-      return true
     end
 
-    
-    erb :dash, :locals => {:client_id => CLIENT_ID, :repos => repos, 
+    erb :dash, :locals => {:client_id => CLIENT_ID, :repos => fresh_repos, 
     						:backups=> backups, :login => github_user.login}
   end
 end

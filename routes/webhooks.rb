@@ -23,7 +23,7 @@ class MyApp < Sinatra::Application
 	post "/webhooks/deactivate/:id" do
 		content_type :json
 
-		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]]
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
 			return status 401
 		end
 
@@ -43,7 +43,7 @@ class MyApp < Sinatra::Application
 	post "/webhooks/reactivate/:id" do
 		content_type :json
 
-		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]]
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
 			return status 401
 		end
 
@@ -62,7 +62,7 @@ class MyApp < Sinatra::Application
 	post "/webhooks/reactivate/:id" do
 		content_type :json
 
-		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]]
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
 			return status 401
 		end
 
