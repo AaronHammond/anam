@@ -1,0 +1,38 @@
+BARRIERS TO LAUNCH
+on the dash, display current backups with their links, and buttons to reactivate/deactivate/delete the backup
+	
+	have a comparable element to the right of the multiselect for backups with buttons for download, reactivate, deactivate, delete
+
+	when they create backup, fade out the entry in the left select, fade it into the right select
+
+	see note about progress throbber below ... we can separate the two selects with an arrow, underwhich we have the throbber
+
+	title the first "My Repos", the second "My Backups"
+
+delete method for backups -- we still need to do a github delete
+
+warn folks that anyone can use their link
+
+rewrite copy
+
+support multibackups (just do what we do now, but using async to parallelize for multiple selection)
+
+progress throbber (we know when we've created the backup, and when we're uploading it. let's add some funky text "creating backup...", "the bits are moving...", "doing my taxes...", "uploading to s3...", "taking an art class...", "done!")
+
+on the front page, have something like "Now serving up XXXX backups"
+
+register an organization for anam.io so the application is registered under the org so it's not sketchy as fuck when we ask for permissions for the api
+
+register the domain name. sign up for a heroku account as well
+
+
+NOT NECESSARY FOR LAUNCH
+
+V0.2?
+on the dash, have radio buttons for "public", "public, but unlisted", "private" under backup creation
+	where public is searchable, public, but unlisted is not, and private requires the upload of a public key, which we use to encrypt on upload to s3.
+
+support uploads with pkeys
+support search
+
+

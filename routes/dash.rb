@@ -7,19 +7,23 @@ class MyApp < Sinatra::Application
   get "/dash" do
   	if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
   		redirect to('/')
-	end
+    end
 
     client = Octokit::Client.new(:access_token=>access_token)
     github_user = client.user()
     repos = github_user.rels[:repos].get.data
+    backups = []
     # only show repos that aren't already backed up.
     repos.filter do |repo|
-    	return Backup[:user_id=>me.id, :repo_target=>repo.name]
+    	extantBackup = Backup[:user_id=>me.id, :repo_target=>me.username + '/' + repo.name]
+      if extantBackup then
+        backups.push(extantBackup)
+        return false
+      end
+      return true
     end
 
-    # backups
-    backups = Backup[:user_id=>me.id]
-
+    
     erb :dash, :locals => {:client_id => CLIENT_ID, :repos => repos, 
     						:backups=> backups, :login => github_user.login}
   end

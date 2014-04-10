@@ -32,8 +32,47 @@ class MyApp < Sinatra::Application
 		end
 		
 		backup.update(:active=>false)
+
 		return backup.to_json
 	end
+
+
+	# POST /webhooks/reactivate/:id
+	#
+	# consumes the external id of a backup and reactivates backup
+	post "/webhooks/reactivate/:id" do
+		content_type :json
+
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]]
+			return status 401
+		end
+
+		if not backup_id = params[:id] or not backup = Backup[:external_id=>backup_id, :user_id=>me.id]
+			return status 400
+		end
+		
+		backup.update(:active=>true)
+
+		return backup.to_json
+	end
+
+	# POST /webhooks/delete/:id
+	#
+	# consumes the external id of a backup and deletes the backup
+	post "/webhooks/reactivate/:id" do
+		content_type :json
+
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]]
+			return status 401
+		end
+
+		if not backup_id = params[:id] or not backup = Backup[:external_id=>backup_id, :user_id=>me.id]
+			return status 400
+		end
+		BackupService.delete(backup)
+		return status 200
+	end
+
 
 
 	# POST /webhooks/new
