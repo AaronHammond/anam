@@ -12,11 +12,15 @@ class MyApp < Sinatra::Application
     client = Octokit::Client.new(:access_token=>access_token)
     github_user = client.user()
     repos = github_user.rels[:repos].get.data
-    repos.each do |repo|
-    	if extantBackup = Backup[:user_id=>me.id, :repo_target=>repo.name]
-    		repo.backed_up = true
-    	end
+    # only show repos that aren't already backed up.
+    repos.filter do |repo|
+    	return Backup[:user_id=>me.id, :repo_target=>repo.name]
     end
-    erb :dash, :locals => {:client_id => CLIENT_ID, :repos => repos, :login => github_user.login}
+
+    # backups
+    backups = Backup[:user_id=>me.id]
+
+    erb :dash, :locals => {:client_id => CLIENT_ID, :repos => repos, 
+    						:backups=> backups, :login => github_user.login}
   end
 end
