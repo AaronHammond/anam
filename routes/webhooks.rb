@@ -4,6 +4,30 @@
 class MyApp < Sinatra::Application
 
 
+
+	# POST /webhooks/delete/:id
+	#
+	# consumes an external backup id and deletes the backup internally and on github
+	post "/webhooks/delete/:id"
+		content_type :json
+
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
+			return status 401
+		end
+
+		if not backup_id = params[:id] or not backup = Backup[:external_id=>backup_id, :user_id=>me.id]
+			return status 400
+		end
+
+		client = Octokit::Client.new(:access_token=>access_token)
+
+		client.delete_hook(backup.webhook_id)
+
+		backup.delete
+
+		return status 200		
+	end
+
 	# GET /webhooks/list
 	#
 	# consumes a get and returns all backups for the currently logged in user
