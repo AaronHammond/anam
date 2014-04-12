@@ -8,7 +8,7 @@ class MyApp < Sinatra::Application
 	# POST /webhooks/delete/:id
 	#
 	# consumes an external backup id and deletes the backup internally and on github
-	post "/webhooks/delete/:id"
+	post "/webhooks/delete/:id" do
 		content_type :json
 
 		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
