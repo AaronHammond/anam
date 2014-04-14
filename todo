@@ -9,11 +9,11 @@ on the dash, display current backups with their links, and buttons to reactivate
 
 	title the first "My Repos", the second "My Backups"
 
-delete method for backups -- we still need to do a github delete
+**DONE**delete method for backups -- we still need to do a github delete
 
 warn folks that anyone can use their link
 
-rewrite copy
+**DONE**rewrite copy
 
 support multibackups (just do what we do now, but using async to parallelize for multiple selection)
 
@@ -21,9 +21,11 @@ progress throbber (we know when we've created the backup, and when we're uploadi
 
 on the front page, have something like "Now serving up XXXX backups"
 
-register an organization for anam.io so the application is registered under the org so it's not sketchy as fuck when we ask for permissions for the api
+**DONE**register an organization for anam.io so the application is registered under the org so it's not sketchy as fuck when we ask for permissions for the api
 
-register the domain name. sign up for a heroku account as well
+**DONE**register the domain name. 
+
+sign up for a heroku account as well
 
 
 NOT NECESSARY FOR LAUNCH
