@@ -136,12 +136,13 @@ select {
 
           for(var i in selected){
             var repo = selected[i];
-            // triggers the popup blocker (also opens in a new window. fix this?)
+            $('#backupin').fadeOut('slow');
             $.ajax({
               url: '/webhooks/delete/'+repo,
               type: 'POST'
             })
             .complete(function(j, status){
+              $('#backupin').fadeIn('slow');
               if(j.status == 200){
                 $('option[value="' + repo+'"]').remove();
               }

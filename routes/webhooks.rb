@@ -137,13 +137,12 @@ class MyApp < Sinatra::Application
 
 		backup = Backup.create(:repo_target=>repo_target,:user_id=>me.id,:external_id=>RandomIdGenerator.random_backup_id)
 
-		# TODO: check if we already have a webhook active. if so, delete it!
 		begin
 			hook = client.create_hook(
 				repo_target, 
 				'web',
 				{
-					:url => 'http://anam.io/webhooks/'+backup.external_id,
+					:url => 'http://www.anam.io/webhooks/'+backup.external_id,
 					:content_type => 'json'
 				},
 				{
