@@ -23,22 +23,28 @@ body {
 
     <div class="cover-container">
 
+    <!--
       <div class="masthead clearfix">
         <div class="inner">
-          <h3 class="masthead-brand">Anam</h3>
+          <h3 class="masthead-brand">anam</h3>
         </div>
-      </div>
+      </div> -->
 
       <div class="inner cover">
         <h1 class="cover-heading">Free unlimited GitHub backup.</h1>
-        <p class="lead">GitHub is really neat, and it's become key to modern software development. Our reliance, however, has created a single point of failure. That's why we built Anam, <b>a free, unlimited backup tool for your GitHub repositories</b>. Never be frustrated again when GitHub is down and you need to clone your project: every time you push we'll back up your repository seamlessly.</p>
+        <p class="lead">GitHub is really neat, and it's become key to modern software development. Our reliance, however, has created a single point of failure. That's why we built anam.io, <b>a free, unlimited backup tool for your GitHub repositories</b>. Never be frustrated again when GitHub is down and you need to clone your project: every time you push we'll back up your repository seamlessly.</p>
         <p class="lead">
         To get started, just sign in with GitHub.
         </p>
         <p class="lead">
         <a href="https://github.com/login/oauth/authorize?scope=user:email,admin:repo_hook,repo&client_id=<%= client_id %>" class="btn btn-lg btn-default">Sign-in With GitHub</a>
         </p>
+
+        <p>
+        <%= backup_count %> backups powered by anam.io
+        </p>
       </div>
+
 
       <div class="mastfoot">
         <div class="inner">

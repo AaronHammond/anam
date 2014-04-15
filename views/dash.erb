@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
+<script src="/js/async.js"></script>
 <style>
 body {
   background: url(assets/img/bg.jpg) no-repeat center center fixed;
@@ -23,10 +24,20 @@ select {
 }
 .chevrons {
   margin-top: 40px;
+  width: 150px;
 }
 
 #status {
   font-size: 14px;
+}
+.cover-container {
+  width: 100%;
+}
+.mastfoot {
+  width: 100%;
+}
+select {
+  min-width: 280px;
 }
 </style>
 </head>
@@ -38,17 +49,19 @@ select {
 
     <div class="cover-container">
 
+      <!--
       <div class="masthead clearfix">
         <div class="inner">
-          <h3 class="masthead-brand">Anam</h3>
+          <h3 class="masthead-brand">anam</h3>
         </div>
       </div>
+      -->
 
       <div class="inner cover">
-        <div class="lead">
+        <div class="lead inputs">
         <select multiple id="repoin" class="input-lg">
         <% for repo in repos do %>
-          <option><%= repo.name %></option>
+          <option value="<%= login + '/' +repo.name %>"><%= repo.name %></option>
         <% end %>
         </select>
 
@@ -65,48 +78,88 @@ select {
           Start a backup!
         </p>
         </div>
-        <div class="lead">
-          <select multiple id="backupin" class="input-lg">
+        <div class="lead inputs">
+          <select multiple id="backupin" class="input-lg" >
         <% for backup in backups do %>
-          <option><%= backup.repo_target.sub login+'/', '' %></option>
+          <option value="<%=backup.external_id%>"><%= backup.repo_target.sub login+'/', '' %></option>
         <% end %>
         </select>
 
         <br>
         <br>
-        <button class="btn btn-success" id="repob">Download!</button>
-        <button class="btn btn-warning" id="repob">Deactivate!</button>
-        <button class="btn btn-danger" id="repob">Delete!</button>
+        <button class="btn btn-success" id="repob">Download</button>
+        <button class="btn btn-warning" id="repob">Deactivate</button>
+        <button class="btn btn-danger" id="repob">Delete</button>
 
         </div>
         
         
         
         <script type="text/javascript">
-        $('#backupin').css('width', $('#repoin').outerWidth())
+        fun_status_lines = ["Checking my portfolio...", "Doing my taxes...", "Calling my doctor...", "Waiting for Episode VII...", "Playing 2048..."];
+
+
+        $('#backupin').css('width', $('#repoin').outerWidth());
+        // hacky af
+        $('.inputs').css('width', $('#repoin').outerWidth());
 
         // this is a multiple select now, so it needs to loop and call the api multiple times
         $('#repob').click(function(){
-          $.ajax({
-            url: '/webhooks/new?repo_target='+'<%=login%>'+'/'+$('#repoin').val(),
-            type: 'POST'})
-          .complete(function(j, status){
-              // the webhook has been created
-              if(j.status == 201){
-                // now let's kick off a backup!
-                var backup = j.responseJSON;
-                $.ajax({
-                  url: '/webhooks/'+backup.external_id,
-                  type: 'POST'
-                })
-                .complete(function(k, status){
-                  if(k.status == 201){
-                    console.log(k.responseJSON);
-                  }
-                });
-              }
-          });
+          var selected = $('#repoin').val()
+
+          var backup_funcs = [];
+
+          for(var i in selected){
+            var repo = selected[i]
+
+            backup_funcs.push(backup_func_generator(repo));
+          }
+          async.parallel.apply(null, [backup_funcs]);
+
         });
+    
+        function backup_func_generator(repo_name){
+          return function(){
+            console.log('creating bacup');
+            $('#status').text('Creating a webhook...');
+            interval = setInterval(updateStatus,2000);
+               $.ajax({
+                url: '/webhooks/new?repo_target='+repo_name,
+                type: 'POST'})
+              .complete(function(j, status){
+                  $('#status').text('Kicking off a backup...');
+                  // the webhook has been created
+                  if(j.status == 201){
+                    // now let's kick off a backup!
+                    var backup = j.responseJSON;
+                    $.ajax({
+                      url: '/webhooks/'+backup.external_id,
+                      type: 'POST'
+                    })
+                    .complete(function(k, status){
+                      if(k.status == 201){
+                        clearInterval(interval);
+                        $('#repoin').fadeOut('slow', function(){
+                          $('option[value="' + repo_name +'"]').remove();
+                          $('#repoin').fadeIn('slow');
+
+                          $('#backupin').fadeOut('slow', function(){
+                            $('#backupin').append($('<option>' + backup.repo_target.replace('<%= login %>/', '')+ '</option>').val(backup.external_id));
+                            $('#backupin').fadeIn('slow');  
+                          })
+                          $('#status').text('Start a backup!');
+                        });
+                      }
+                    });
+                  }
+              });
+            }
+          }
+          function updateStatus(){
+            $('#status').text(fun_status_lines[Math.floor(Math.random()*fun_status_lines.length)]);
+          }
+          
+         
         </script>
         </p>
       </div>

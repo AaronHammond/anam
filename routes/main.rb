@@ -5,7 +5,8 @@ class MyApp < Sinatra::Application
 	CLIENT_SECRET = ENV['GH_BASIC_SECRET_ID']
 
 	get "/" do
-		count = Backup.count			
+		count = Backup.count
+		puts count			
 		erb :index, :locals => {:client_id => CLIENT_ID, :backup_count => count}
 	end
 end
