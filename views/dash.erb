@@ -87,13 +87,15 @@ select {
 
         <br>
         <br>
-        <button class="btn btn-success" id="repob">Download</button>
-        <button class="btn btn-warning" id="repob">Deactivate</button>
-        <button class="btn btn-danger" id="repob">Delete</button>
+        <button class="btn btn-success" id="backup_download">Download</button>
+        <!--<button class="btn btn-warning" id="backup_deactivate">Deactivate</button>-->
+        <button class="btn btn-danger" id="backup_delete">Delete</button>
 
         </div>
         
         
+
+
         
         <script type="text/javascript">
         fun_status_lines = ["Checking my portfolio...", "Doing my taxes...", "Calling my doctor...", "Waiting for Episode VII...", "Playing 2048..."];
@@ -105,6 +107,7 @@ select {
 
         // this is a multiple select now, so it needs to loop and call the api multiple times
         $('#repob').click(function(){
+          $('#repob').prop('disabled', 'true'); 
           var selected = $('#repoin').val()
 
           var backup_funcs = [];
@@ -117,12 +120,21 @@ select {
           async.parallel.apply(null, [backup_funcs]);
 
         });
+
+        $('#backup_download').click(function(){
+          var selected = $('#backupin').val()
+
+          for(var i in selected){
+            var repo = selected[i];
+            // triggers the popup blocker (also opens in a new window. fix this?)
+            window.open('/webhooks/download/'+repo,'_blank');
+          }
+        });
     
         function backup_func_generator(repo_name){
           return function(){
             console.log('creating bacup');
             $('#status').text('Creating a webhook...');
-            interval = setInterval(updateStatus,2000);
                $.ajax({
                 url: '/webhooks/new?repo_target='+repo_name,
                 type: 'POST'})
@@ -132,13 +144,13 @@ select {
                   if(j.status == 201){
                     // now let's kick off a backup!
                     var backup = j.responseJSON;
+                    startFlavorTexting();
                     $.ajax({
                       url: '/webhooks/'+backup.external_id,
                       type: 'POST'
                     })
                     .complete(function(k, status){
                       if(k.status == 201){
-                        clearInterval(interval);
                         $('#repoin').fadeOut('slow', function(){
                           $('option[value="' + repo_name +'"]').remove();
                           $('#repoin').fadeIn('slow');
@@ -147,7 +159,7 @@ select {
                             $('#backupin').append($('<option>' + backup.repo_target.replace('<%= login %>/', '')+ '</option>').val(backup.external_id));
                             $('#backupin').fadeIn('slow');  
                           })
-                          $('#status').text('Start a backup!');
+                          stopFlavorTexting();
                         });
                       }
                     });
@@ -157,6 +169,23 @@ select {
           }
           function updateStatus(){
             $('#status').text(fun_status_lines[Math.floor(Math.random()*fun_status_lines.length)]);
+          }
+
+          var running = 0;
+          var interval;
+          function startFlavorTexting() {
+            if(running == 0){
+              interval = setInterval(updateStatus, 1500);
+            }
+            running++;
+          }
+          function stopFlavorTexting(){
+           running--;
+            if(running == 0){
+              clearInterval(interval);
+              $('#status').text('Start a backup!');
+              $('#repob').prop('disabled', '');
+            }
           }
           
          

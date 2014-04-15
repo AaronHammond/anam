@@ -5,6 +5,21 @@ class MyApp < Sinatra::Application
 
 
 
+	# GET /webhooks/download/:id
+	#
+	# consumes an external backup id and redirects to the s3 dump
+	get "/webhooks/download/:id" do
+		if not access_token = session["access_token"] or not me = User[:access_token=>access_token]
+			return status 401
+		end
+
+		if not backup_id = params[:id] or not backup = Backup[:external_id=>backup_id, :user_id=>me.id]
+			return status 400
+		end
+
+		redirect to(backup.s3_link)
+	end
+
 
 
 	# POST /webhooks/delete/:id
