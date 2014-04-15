@@ -36,11 +36,8 @@ class MyApp < Sinatra::Application
 			return status 400
 		end
 
-		client = Octokit::Client.new(:access_token=>access_token)
 
-		client.delete_hook(backup.webhook_id)
-
-		backup.delete
+		BackupService.deleteBackup(backup)
 
 		return status 200		
 	end

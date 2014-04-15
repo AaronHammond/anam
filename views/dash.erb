@@ -130,6 +130,24 @@ select {
             window.open('/webhooks/download/'+repo,'_blank');
           }
         });
+
+        $('#backup_delete').click(function(){
+          var selected = $('#backupin').val()
+
+          for(var i in selected){
+            var repo = selected[i];
+            // triggers the popup blocker (also opens in a new window. fix this?)
+            $.ajax({
+              url: '/webhooks/delete/'+repo,
+              type: 'POST'
+            })
+            .complete(function(j, status){
+              if(j.status == 200){
+                $('option[value="' + repo+'"]').remove();
+              }
+            });
+          }
+        });
     
         function backup_func_generator(repo_name){
           return function(){

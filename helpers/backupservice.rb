@@ -50,19 +50,17 @@ module BackupService
 		client = Octokit::Client.new(:access_token=>User[target.user_id].access_token)
 
 		# delete github hook
-
-		#TODO WITH DOCUMENTATION
-
+		client.remove_hook(target.repo_target, target.webhook_id)
 		# delete on s3
 		s3 = AWS::S3.new
-
 		repo_archive = s3.buckets['anamnesis-112358'].objects[target.external_id+'.zip']
 		if repo_archive.exists? then
 			repo_archive.delete
 		end
 
-		# finally, delete it :()
+		# finally, delete it :(s)
 		target.delete
 	end
+	module_function :deleteBackup
 
 end
