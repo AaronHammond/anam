@@ -15,7 +15,7 @@ end
 
 DB.create_table :backups do 
 	primary_key :id
-	datetime :last_backup
+	timestamp :last_backup
 	varchar :repo_target
 	varchar :s3_link
 	boolean :active, :default=>true
