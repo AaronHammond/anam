@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 gem 'aws-sdk'
+gem 'cssmin'
 gem 'jsmin'
 gem 'sinatra'
 gem 'haml'

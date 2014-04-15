@@ -6,6 +6,7 @@ GEM
       json (~> 1.4)
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
+    cssmin (1.0.3)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     haml (4.0.5)
@@ -46,6 +47,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk
+  cssmin
   haml
   httparty
   jsmin
