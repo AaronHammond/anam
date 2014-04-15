@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+gem 'aws-sdk'
+gem 'jsmin'
 gem 'sinatra'
 gem 'haml'
 gem 'rest-client'
