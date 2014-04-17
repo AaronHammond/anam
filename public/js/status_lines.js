@@ -1,0 +1,20 @@
+fun_status_lines = [
+"Checking my portfolio...",
+"Doing my taxes...",
+"Calling my doctor...",
+"Waiting for Episode VII...",
+"Playing 2048...",
+"Adding hidden agendas...",
+"Adjusting bell curves...",
+"Integrating curves...",
+"Relaxing splines...",
+"Jamming to Katy Perry...",
+"Marrying a super model...",
+"Divorcing a super model...",
+"Priming the tubes...",
+"Prodding the hamster...",
+"Stopping climate change...",
+"Warming the processors...",
+"Raking my lawn...",
+"Brewing some java..."
+];
