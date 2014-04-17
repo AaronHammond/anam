@@ -5,7 +5,9 @@
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/trip.css">
 <script src="/js/async.js"></script>
+<script src="/js/trip.js"></script>
 <style>
 body {
   background: url(assets/img/bg.jpg) no-repeat center center fixed;
@@ -40,6 +42,10 @@ select {
   min-width: 280px;
 }
 
+#tour {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 767) {
   .lead {
     display: block;
@@ -54,7 +60,7 @@ select {
   }
 }
 </style>
-<title>Dashboard - Anam.io</title>
+<title>Dashboard - anam.io</title>
 </head>
 <body>
 
@@ -112,126 +118,20 @@ select {
 
 
 
-        <script type="text/javascript">
-        fun_status_lines = ["Checking my portfolio...", "Doing my taxes...", "Calling my doctor...", "Waiting for Episode VII...", "Playing 2048..."];
 
-
-        $('#backupin').css('width', $('#repoin').outerWidth());
-        // hacky af
-        $('.inputs').css('width', $('#repoin').outerWidth());
-
-        // this is a multiple select now, so it needs to loop and call the api multiple times
-        $('#repob').click(function(){
-          $('#repob').prop('disabled', 'true');
-          var selected = $('#repoin').val()
-
-          var backup_funcs = [];
-
-          for(var i in selected){
-            var repo = selected[i]
-
-            backup_funcs.push(backup_func_generator(repo));
-          }
-          async.parallel.apply(null, [backup_funcs]);
-
-        });
-
-        $('#backup_download').click(function(){
-          var selected = $('#backupin').val()
-
-          for(var i in selected){
-            var repo = selected[i];
-            // triggers the popup blocker (also opens in a new window. fix this?)
-            window.open('/webhooks/download/'+repo,'_blank');
-          }
-        });
-
-        $('#backup_delete').click(function(){
-          var selected = $('#backupin').val()
-
-          for(var i in selected){
-            var repo = selected[i];
-            $('#backupin').fadeOut('slow');
-            $.ajax({
-              url: '/webhooks/delete/'+repo,
-              type: 'POST'
-            })
-            .complete(function(j, status){
-              $('#backupin').fadeIn('slow');
-              if(j.status == 200){
-                $('option[value="' + repo+'"]').remove();
-              }
-            });
-          }
-        });
-
-        function backup_func_generator(repo_name){
-          return function(){
-            console.log('creating bacup');
-            $('#status').text('Creating a webhook...');
-               $.ajax({
-                url: '/webhooks/new?repo_target='+repo_name,
-                type: 'POST'})
-              .complete(function(j, status){
-                  $('#status').text('Kicking off a backup...');
-                  // the webhook has been created
-                  if(j.status == 201){
-                    // now let's kick off a backup!
-                    var backup = j.responseJSON;
-                    startFlavorTexting();
-                    $.ajax({
-                      url: '/webhooks/'+backup.external_id,
-                      type: 'POST'
-                    })
-                    .complete(function(k, status){
-                      if(k.status == 201){
-                        $('#repoin').fadeOut('slow', function(){
-                          $('option[value="' + repo_name +'"]').remove();
-                          $('#repoin').fadeIn('slow');
-
-                          $('#backupin').fadeOut('slow', function(){
-                            $('#backupin').append($('<option>' + backup.repo_target.replace('<%= login %>/', '')+ '</option>').val(backup.external_id));
-                            $('#backupin').fadeIn('slow');
-                          })
-                          stopFlavorTexting();
-                        });
-                      }
-                    });
-                  }
-              });
-            }
-          }
-          function updateStatus(){
-            $('#status').text(fun_status_lines[Math.floor(Math.random()*fun_status_lines.length)]);
-          }
-
-          var running = 0;
-          var interval;
-          function startFlavorTexting() {
-            if(running == 0){
-              interval = setInterval(updateStatus, 1500);
-            }
-            running++;
-          }
-          function stopFlavorTexting(){
-           running--;
-            if(running == 0){
-              clearInterval(interval);
-              $('#status').text('Start a backup!');
-              $('#repob').prop('disabled', '');
-            }
-          }
-
-
-        </script>
         </p>
       </div>
 
       <div class="mastfoot">
+        <p id="tour"><b>Take a tour</b></p>
         <div class="inner">
-          <small>
+         <small>
            <p>Built by Andrew Nissen (<a href="http://twitter.com/ambushsabre">@ambushsabre</a>) and Aaron Hammond (<a href="http://twitter.com/kanaborama">@kanaborama</a>). Shoot us an email: <a href="mailto:anamnesis@mit.edu?Subject=You%20rock!" target="_top">anamnesis@mit.edu</a></p>
          </small>
+         <p>
+           <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://anam.io" data-text="anam.io: Free, Unlimited GitHub backups" data-count="none">Tweet</a>
+           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+         </p>
         </div>
       </div>
 
@@ -241,4 +141,195 @@ select {
 
 </div>
 </body>
+<script type="text/javascript">
+
+
+  var trip = new Trip([
+    {
+      content: 'Welcome to anam.io. This tutorial will show you the basics.',
+      position: 'screen-center',
+    },
+    {
+      content: 'These are your repos, pulled from Github. You can select one or many.',
+      sel: $('#repoin'),
+      position: 'n'
+    },
+    {
+      content: 'Clicking this will set up a backup of the selected repos. We\'ll update this backup everytime you push.',
+      sel: $('#repob'),
+      position: 'n'
+    },
+    {
+      content: 'Once you set up backups, your repos will move over here, indicating that we have an up-to-date copy. You can again select one or many.',
+      sel: $('#backupin'),
+      position: 'n'
+    },
+    {
+      content: 'At any time, you can download a .zip of the latest version of your code pushed to GitHub. Share this link with whomever you want!',
+      sel: $('#backup_download'),
+      position: 'n'
+    },
+    {
+      content: 'If you don\'t need your backups anymore, you can always delete them.',
+      sel: $('#backup_delete'),
+      position: 's'
+    },
+    {
+      content: 'Have a question? Want to share the love? Tweet at us!',
+      sel: $('.mastfoot .inner small p'),
+      position: 'n'
+    }
+    ], {
+      finishLabel: 'Let me use it!',
+      showNavigation: true,
+      showCloseBox: true,
+      delay: -1
+    });
+  <% if backups.length == 0 then %>
+    $(document).ready(function(){
+      trip.start()
+    });
+  <% end %>
+
+  $('#tour').click(function(){
+     trip.start();
+  });
+
+
+
+
+  fun_status_lines = ["Checking my portfolio...", "Doing my taxes...", "Calling my doctor...", "Waiting for Episode VII...", "Playing 2048..."];
+
+
+  $('#backupin').css('width', $('#repoin').outerWidth());
+  // hacky af
+  $('.inputs').css('width', $('#repoin').outerWidth());
+
+  // this is a multiple select now, so it needs to loop and call the api multiple times
+  $('#repob').click(function(){
+    $('#repob').prop('disabled', 'true');
+    var selected = $('#repoin').val()
+
+    var backup_funcs = [];
+
+    for(var i in selected){
+      var repo = selected[i]
+
+      backup_funcs.push(backup_func_generator(repo));
+    }
+    async.parallel.apply(null, [backup_funcs]);
+
+  });
+
+  $('#backup_download').click(function(){
+    var selected = $('#backupin').val()
+
+    for(var i in selected){
+      var repo = selected[i];
+      // triggers the popup blocker (also opens in a new window. fix this?)
+      window.open('/webhooks/download/'+repo,'_blank');
+    }
+  });
+
+  $('#backup_delete').click(function(){
+    var selected = $('#backupin').val()
+    delete_funcs = []
+    for(var i in selected){
+      var repo = selected[i];
+      delete_funcs.push(delete_func_generator(repo));
+    }
+
+    $('#backupin').fadeTo('slow', 0);
+    $('#repoin').fadeTo('slow', 0);
+    async.parallel.apply(null, [delete_funcs]);
+  });
+
+  function delete_func_generator(repo){
+    return function(){
+      running++;
+      $.ajax({
+        url: '/webhooks/delete/'+repo,
+        type: 'POST'
+      })
+      .complete(function(j, status){
+        if(j.status == 200){
+          text = $('option[value="' + repo+'"]').text();
+          $('option[value="' + repo+'"]').remove();
+          $('#repoin').prepend($('<option>' + text + '</option>').val('<%=login%>/'+text));
+          finishDelete();
+        }
+      });
+    }
+  }
+
+
+
+  function backup_func_generator(repo_name){
+    return function(){
+      $('#status').text('Creating a webhook...');
+         $.ajax({
+          url: '/webhooks/new?repo_target='+repo_name,
+          type: 'POST'})
+        .complete(function(j, status){
+            $('#status').text('Kicking off a backup...');
+            // the webhook has been created
+            if(j.status == 201){
+              // now let's kick off a backup!
+              var backup = j.responseJSON;
+              startFlavorTexting();
+              $.ajax({
+                url: '/webhooks/'+backup.external_id,
+                type: 'POST'
+              })
+              .complete(function(k, status){
+                if(k.status == 201){
+                  $('#repoin').fadeTo('slow', 0, function(){
+                    $('option[value="' + repo_name +'"]').remove();
+                    $('#repoin').fadeTo('slow', 1);
+
+                    $('#backupin').fadeTo('slow', 0, function(){
+                      $('#backupin').append($('<option>' + backup.repo_target.replace('<%= login %>/', '')+ '</option>').val(backup.external_id));
+                      children = $('#backupin').children();
+                      children[children.length - 1].selected = true;
+                      $('#backupin').fadeTo('slow', 1);
+                    })
+                    stopFlavorTexting();
+                  });
+                }
+              });
+            }
+        });
+      }
+  }
+  function updateStatus(){
+    $('#status').text(fun_status_lines[Math.floor(Math.random()*fun_status_lines.length)]);
+  }
+
+  var running = 0;
+  var interval;
+  function startFlavorTexting() {
+    if(running == 0){
+      interval = setInterval(updateStatus, 1500);
+    }
+    running++;
+  }
+  function stopFlavorTexting(){
+   running--;
+    if(running == 0){
+      clearInterval(interval);
+      $('#status').text('Start a backup!');
+      $('#repob').prop('disabled', '');
+    }
+  }
+
+  function finishDelete(){
+    running--;
+    if(running == 0){
+      $('#repoin').fadeTo('slow', 1);
+      $('#backupin').fadeTo('slow', 1);
+    }
+  }
+
+
+</script>
 </html>
