@@ -39,6 +39,16 @@ select {
 select {
   min-width: 280px;
 }
+
+@media screen and (max-width: 767) {
+  .lead {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+}
 </style>
 <title>Dashboard - Anam.io</title>
 </head>
@@ -93,11 +103,11 @@ select {
         <button class="btn btn-danger" id="backup_delete">Delete</button>
 
         </div>
-        
-        
 
 
-        
+
+
+
         <script type="text/javascript">
         fun_status_lines = ["Checking my portfolio...", "Doing my taxes...", "Calling my doctor...", "Waiting for Episode VII...", "Playing 2048..."];
 
@@ -108,7 +118,7 @@ select {
 
         // this is a multiple select now, so it needs to loop and call the api multiple times
         $('#repob').click(function(){
-          $('#repob').prop('disabled', 'true'); 
+          $('#repob').prop('disabled', 'true');
           var selected = $('#repoin').val()
 
           var backup_funcs = [];
@@ -150,7 +160,7 @@ select {
             });
           }
         });
-    
+
         function backup_func_generator(repo_name){
           return function(){
             console.log('creating bacup');
@@ -177,7 +187,7 @@ select {
 
                           $('#backupin').fadeOut('slow', function(){
                             $('#backupin').append($('<option>' + backup.repo_target.replace('<%= login %>/', '')+ '</option>').val(backup.external_id));
-                            $('#backupin').fadeIn('slow');  
+                            $('#backupin').fadeIn('slow');
                           })
                           stopFlavorTexting();
                         });
@@ -207,8 +217,8 @@ select {
               $('#repob').prop('disabled', '');
             }
           }
-          
-         
+
+
         </script>
         </p>
       </div>
