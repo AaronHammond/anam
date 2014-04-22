@@ -25,7 +25,7 @@ body {
 
     <div class="cover-container">
 
-    <!--
+      <!--
       <div class="masthead clearfix">
         <div class="inner">
           <h3 class="masthead-brand">anam</h3>
@@ -41,11 +41,16 @@ body {
         <p class="lead">
         <a href="https://github.com/login/oauth/authorize?scope=user:email,admin:repo_hook,repo&client_id=<%= client_id %>" class="btn btn-lg btn-default">Sign-in With GitHub</a>
         </p>
-
         <p>
-       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://anam.io" data-text="anam.io: Free, Unlimited GitHub backups" data-count="none">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        <b>Our Awesome Partners:</b>
+        <br>
+        <a href="http://onion.io"><img src="logo_onion.svg" width="20%" color:"#000000"/></a>
         </p>
+        <p>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://anam.io" data-text="anam.io: Free, Unlimited GitHub backups" data-count="none">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </p>
+
         <p>
         <%= backup_count %> backups powered by anam.io
         </p>
@@ -55,8 +60,8 @@ body {
       <div class="mastfoot">
         <div class="inner">
           <small>
-          <p>Built by Andrew Nissen (<a href="http://twitter.com/ambushsabre">@ambushsabre</a>) and Aaron Hammond (<a href="http://twitter.com/kanaborama">@kanaborama</a>). Shoot us an email: <a href="mailto:anamnesis@mit.edu?Subject=You%20rock!" target="_top">anamnesis@mit.edu</a></p>
-        </small>
+            <p>Built by Andrew Nissen (<a href="http://twitter.com/ambushsabre">@ambushsabre</a>) and Aaron Hammond (<a href="http://twitter.com/kanaborama">@kanaborama</a>). Shoot us an email: <a href="mailto:anamnesis@mit.edu?Subject=You%20rock!" target="_top">anamnesis@mit.edu</a></p>
+          </small>
         </div>
       </div>
 
@@ -67,13 +72,13 @@ body {
 </div>
 </body>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-50156926-1', 'anam.io');
-  ga('send', 'pageview');
+ga('create', 'UA-50156926-1', 'anam.io');
+ga('send', 'pageview');
 
 </script>
 </html>
